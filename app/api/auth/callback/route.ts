@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // Exchange code for token
     const params = new URLSearchParams({
       client_id: process.env.DISCORD_CLIENT_ID!,
       client_secret: process.env.DISCORD_CLIENT_SECRET!,
@@ -33,10 +34,32 @@ export async function GET(req: NextRequest) {
 
     const tokenData = await tokenRes.json();
 
-    return NextResponse.json({
-      success: true,
-      tokenData,
-    });
+    // Get Discord user
+    const userRes = await fetch(
+      "https://discord.com/api/users/@me",
+      {
+        headers: {
+          Authorization: `Bearer ${tokenData.access_token}`,
+        },
+      }
+    );
+
+    const user = await userRes.json();
+
+    // Add role
+    await fetch(
+      `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${user.id}/roles/${process.env.DISCORD_ROLE_ID}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
+        },
+      }
+    );
+
+    return NextResponse.redirect(
+      "https://gandi-politics-verify.vercel.app"
+    );
   } catch (err) {
     return NextResponse.json(
       {

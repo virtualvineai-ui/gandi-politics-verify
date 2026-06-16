@@ -141,18 +141,12 @@ export default function Home() {
 
         {/* Button */}
         <div className="mt-12 flex justify-center">
-          <motion.button
-            whileHover={{
-              scale: 1.08,
-              boxShadow: "0 0 80px rgba(255,0,180,0.7)",
-            }}
-            whileTap={{
-              scale: 0.95,
-            }}
+          <a
+            href="/api/auth/login"
             className="rounded-2xl bg-gradient-to-r from-blue-500 to-pink-500 px-12 py-5 text-xl font-bold text-white"
           >
             🎮 VERIFY WITH DISCORD
-          </motion.button>
+          </a>
         </div>
 
         {/* Features */}
