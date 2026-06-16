@@ -76,14 +76,9 @@ const joinData = await joinRes.text();
 
     const roleData = await roleRes.text();
 
-    return NextResponse.json({
-      success: true,
-      user,
-      joinStatus: joinRes.status,
-      joinData,
-      roleStatus: roleRes.status,
-      roleData,
-    });
+    return NextResponse.redirect(
+     "https://gandi-politics-verify.vercel.app/success"
+     );
   } catch (err) {
     return NextResponse.json(
       {
