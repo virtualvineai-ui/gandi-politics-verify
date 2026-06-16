@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
 
   if (!code) {
     return NextResponse.redirect(
-      "https://gandi-politics-verify.vercel.app"
+      "https://discord.com/channels/1516156573620240614/1516223995010355360"
     );
   }
 
