@@ -46,6 +46,21 @@ export async function GET(req: NextRequest) {
 
     const user = await userRes.json();
 
+    // Add user to server
+await fetch(
+  `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${user.id}`,
+  {
+    method: "PUT",
+    headers: {
+      Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      access_token: tokenData.access_token,
+    }),
+  }
+);
+
     // Add role
     await fetch(
       `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${user.id}/roles/${process.env.DISCORD_ROLE_ID}`,
@@ -57,9 +72,10 @@ export async function GET(req: NextRequest) {
       }
     );
 
-    return NextResponse.redirect(
-      "https://gandi-politics-verify.vercel.app"
-    );
+    return NextResponse.json({
+      success: true,
+      user,
+    });
   } catch (err) {
     return NextResponse.json(
       {
