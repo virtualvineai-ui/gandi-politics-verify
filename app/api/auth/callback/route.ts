@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
     const user = await userRes.json();
 
     // Add user to server
-await fetch(
+const joinRes = await fetch(
   `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${user.id}`,
   {
     method: "PUT",
@@ -61,9 +61,11 @@ await fetch(
   }
 );
 
+const joinData = await joinRes.text();
+
     // Add role
-    await fetch(
-      `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${user.id}/roles/${process.env.DISCORD_ROLE_ID}`,
+    const roleRes = await fetch(
+       `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${user.id}/roles/${process.env.DISCORD_ROLE_ID}`,
       {
         method: "PUT",
         headers: {
@@ -72,9 +74,15 @@ await fetch(
       }
     );
 
+    const roleData = await roleRes.text();
+
     return NextResponse.json({
       success: true,
       user,
+      joinStatus: joinRes.status,
+      joinData,
+      roleStatus: roleRes.status,
+      roleData,
     });
   } catch (err) {
     return NextResponse.json(
