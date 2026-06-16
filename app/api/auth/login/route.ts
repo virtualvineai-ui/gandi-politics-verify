@@ -11,7 +11,7 @@ export async function GET() {
     `?client_id=${clientId}` +
     `&response_type=code` +
     `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-    `&scope=identify`;
+    `&scope=identify%20guilds.join`;
 
   return NextResponse.redirect(url);
 }
